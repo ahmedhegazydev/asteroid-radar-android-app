@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.util
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.util.Constants.DEFAULT_END_DATE_DAYS
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +49,7 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
 fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
     val calendar = Calendar.getInstance()
-    for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
+    for (i in 0 until DEFAULT_END_DATE_DAYS) {
         val currentTime = calendar.time
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         formattedDateList.add(dateFormat.format(currentTime))

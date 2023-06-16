@@ -15,8 +15,10 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by lazy {
         val activity = requireNotNull(this.activity) {}
-
-        ViewModelProvider(this, MainViewModelFactory(activity.application)).get(MainViewModel::class.java)
+        ViewModelProvider(
+            this,
+            MainViewModelFactory(activity.application)
+        )[MainViewModel::class.java]
     }
 
     private lateinit var binding: FragmentMainBinding
@@ -83,11 +85,13 @@ class MainFragment : Fragment() {
                     adapter.submitList(it)
                 }
             }
+
             R.id.show_today_asteroids -> {
                 viewModel.getTodayAsteroids().observe(viewLifecycleOwner) {
                     adapter.submitList(it)
                 }
             }
+
             R.id.show_all_asteroids -> {
                 viewModel.asteroids.observe(viewLifecycleOwner) {
                     adapter.submitList(it)

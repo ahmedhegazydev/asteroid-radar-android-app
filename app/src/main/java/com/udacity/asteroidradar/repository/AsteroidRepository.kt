@@ -19,24 +19,27 @@ class AsteroidRepository(private val database: AsteroidsDatabase) {
         it.asDomainModel()
     }
 
-    fun getWeekAsteroids(startDate: String, endDate: String) = database.asteroidDao.getWeekAsteroids(startDate, endDate)
+    fun getWeekAsteroids(startDate: String, endDate: String) =
+        database.asteroidDao.getWeekAsteroids(startDate, endDate)
 
     fun getTodayAsteroids(todayDate: String) = database.asteroidDao.getTodayAsteroids(todayDate)
 
-    fun deletePreviousDayAsteroid(date: String) = database.asteroidDao.deletePreviousDayAsteroids(date)
+    fun deletePreviousDayAsteroid(date: String) =
+        database.asteroidDao.deletePreviousDayAsteroids(date)
 
     suspend fun refreshAsteroid(startDate: String, endDate: String, apiKey: String) {
         withContext(Dispatchers.IO) {
             try {
-                val resultList = AsteroidApi.retrofitService.getAsteroidProperties(startDate, endDate, apiKey)
+                val resultList =
+                    AsteroidApi.retrofitService.getAsteroidProperties(startDate, endDate, apiKey)
                 val asteroidList = parseAsteroidsJsonResult(JSONObject(resultList))
                 database.asteroidDao.insertAll(*asteroidList.asDatabaseModel())
             } catch (e: Exception) {
                 Log.i("Failure", e.message!!)
-
             }
         }
     }
 
-    suspend fun getPictureOfTheDay(apiKey: String) = PictureOfDayApi.retrofitService.getImageOfTheDay(apiKey)
+    suspend fun getPictureOfTheDay(apiKey: String) =
+        PictureOfDayApi.retrofitService.getImageOfTheDay(apiKey)
 }
