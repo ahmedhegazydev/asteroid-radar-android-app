@@ -11,11 +11,13 @@ import retrofit2.HttpException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RefreshAsteroidWork(appContext: Context, params: WorkerParameters): CoroutineWorker(appContext, params) {
+class RefreshAsteroidWork(appContext: Context, params: WorkerParameters) :
+    CoroutineWorker(appContext, params) {
 
     companion object {
         const val WORK_NAME = "RefreshAsteroidsWork"
     }
+
     override suspend fun doWork(): Result {
         val database = AsteroidsDatabase.getInstance(applicationContext)
         val repository = AsteroidRepository(database)
@@ -29,7 +31,6 @@ class RefreshAsteroidWork(appContext: Context, params: WorkerParameters): Corout
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         val previousDayDate = dateFormat.format(previousDayTime)
 
-
         return try {
             repository.refreshAsteroid(startDate, endDate, Constants.API_KEY)
             repository.deletePreviousDayAsteroid(previousDayDate)
@@ -37,8 +38,6 @@ class RefreshAsteroidWork(appContext: Context, params: WorkerParameters): Corout
         } catch (e: HttpException) {
             Result.retry()
         }
-
-
     }
 
 }

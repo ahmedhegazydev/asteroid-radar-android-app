@@ -9,6 +9,7 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.adapter.AsteroidAdapter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.ui.main.MainViewModel.NasaApiStatus
+import com.udacity.asteroidradar.util.getNextSevenDaysFormattedDates
 
 class MainFragment : Fragment() {
 
@@ -81,13 +82,15 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.show_week_asteroids -> {
-                viewModel.getWeekAsteroid().observe(viewLifecycleOwner) {
+                val startDate = getNextSevenDaysFormattedDates()[0]
+                viewModel.getWeekAsteroid(startDate).observe(viewLifecycleOwner) {
                     adapter.submitList(it)
                 }
             }
 
             R.id.show_today_asteroids -> {
-                viewModel.getTodayAsteroids().observe(viewLifecycleOwner) {
+                val currentDate = getNextSevenDaysFormattedDates()[0]
+                viewModel.getTodayAsteroids(currentDate).observe(viewLifecycleOwner) {
                     adapter.submitList(it)
                 }
             }

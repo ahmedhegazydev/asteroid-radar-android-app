@@ -18,7 +18,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = AsteroidsDatabase.getInstance(application)
     private val asteroidRepository = AsteroidRepository(database)
 
-    private val currentDate = getNextSevenDaysFormattedDates()[0]
     private val startDate = getNextSevenDaysFormattedDates()[1]
     private val endDate = getNextSevenDaysFormattedDates()[6]
     private val weekEnd = getNextSevenDaysFormattedDates()[6]
@@ -50,14 +49,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getWeekAsteroid(): LiveData<List<Asteroid>> {
+    fun getWeekAsteroid(startDate: String): LiveData<List<Asteroid>> {
         val weekAsteroid = asteroidRepository.getWeekAsteroids(startDate, weekEnd).map {
             it.asDomainModel()
         }
         return weekAsteroid
     }
 
-    fun getTodayAsteroids(): LiveData<List<Asteroid>> {
+    fun getTodayAsteroids(currentDate: String): LiveData<List<Asteroid>> {
         val todayAsteroids = asteroidRepository.getTodayAsteroids(currentDate).map {
             it.asDomainModel()
         }
